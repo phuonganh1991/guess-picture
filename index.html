@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trò Chơi Nhìn Hình Viết Từ</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            text-align: center;
+        }
+        .game-container {
+            margin-top: 50px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        img {
+            width: 100px;
+            height: 100px;
+        }
+        input {
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .message {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-container">
+        <h1>Trò Chơi Nhìn Hình Viết Từ</h1>
+        <p>Nhìn vào hình và viết tên hình vào ô dưới đây:</p>
+        <img src="https://via.placeholder.com/100?text=Circle" alt="Hình Tròn" id="image">
+        <input type="text" id="userInput" placeholder="Viết từ ở đây..." />
+        <button onclick="checkAnswer()">Kiểm tra</button>
+        <div class="message" id="message"></div>
+        <audio id="correctSound" src="correct.mp3" preload="auto"></audio>
+        <audio id="wrongSound" src="wrong.mp3" preload="auto"></audio>
+        <audio id="pronunciation" src="circle_pronunciation.mp3" preload="auto"></audio>
+    </div>
+
+    <script>
+        const questions = [
+            {image: "https://via.placeholder.com/100?text=Circle", answer: "circle", pronunciation: "circle_pronunciation.mp3"},
+            {image: "https://via.placeholder.com/100?text=Square", answer: "square", pronunciation: "square_pronunciation.mp3"},
+            {image: "https://via.placeholder.com/100?text=Triangle", answer: "triangle", pronunciation: "triangle_pronunciation.mp3"},
+            {image: "https://via.placeholder.com/100?text=Rectangle", answer: "rectangle", pronunciation: "rectangle_pronunciation.mp3"},
+            {image: "https://via.placeholder.com/100?text=Star", answer: "star", pronunciation: "star_pronunciation.mp3"},
+            {image: "https://via.placeholder.com/100?text=Oval", answer: "oval", pronunciation: "oval_pronunciation.mp3"},
+            {image: "https://via.placeholder.com/100?text=Diamond", answer: "diamond", pronunciation: "diamond_pronunciation.mp3"},
+            {image: "https://via.placeholder.com/100?text=Heart", answer: "heart", pronunciation: "heart_pronunciation.mp3"},
+            {image: "https://via.placeholder.com/100?text=Pentagon", answer: "pentagon", pronunciation: "pentagon_pronunciation.mp3"},
+            {image: "https://via.placeholder.com/100?text=Hexagon", answer: "hexagon", pronunciation: "hexagon_pronunciation.mp3"}
+        ];
+        
+        let currentQuestionIndex = 0;
+        const imageElement = document.getElementById("image");
+        const userInputElement = document.getElementById("userInput");
+        const messageElement = document.getElementById("message");
+        const correctSound = document.getElementById("correctSound");
+        const wrongSound = document.getElementById("wrongSound");
+        const pronunciationSound = document.getElementById("pronunciation");
+
+        function loadQuestion() {
+            const question = questions[currentQuestionIndex];
+            imageElement.src = question.image;
+            userInputElement.value = "";
+            messageElement.innerHTML = "";
+        }
+
+        function checkAnswer() {
+            const userAnswer = userInputElement.value.trim().toLowerCase();
+            const correctAnswer = questions[currentQuestionIndex].answer;
+            const pronunciationFile = questions[currentQuestionIndex].pronunciation;
+
+            if (userAnswer === correctAnswer) {
+                messageElement.innerHTML = "Chúc mừng! Bạn đã trả lời đúng!";
+                messageElement.style.color = "green";
+                correctSound.play();
+                pronunciationSound.src = pronunciationFile;
+                pronunciationSound.play();
+                nextQuestion();
+            } else {
+                messageElement.innerHTML = "Sai rồi, thử lại nhé!";
+                messageElement.style.color = "red";
+                wrongSound.play();
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                loadQuestion();
+            } else {
+                messageElement.innerHTML = "Chúc mừng bạn đã hoàn thành trò chơi!";
+                messageElement.style.color = "blue";
+            }
+        }
+
+        loadQuestion(); // Load câu hỏi đầu tiên khi trang được tải
+    </script>
+
+</body>
+</html>
